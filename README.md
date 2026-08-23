@@ -1,4 +1,4 @@
-#Höhe zwischen zwei Masten
+# Höhe zwischen zwei Masten
 
 Interaktives Script, um die Höhe des Kreuzungspunktes von zwei Abspannseilen zu bestimmen. 
 Die Höhe und der Abstand der zwei Masten kann mit der Maus in der Grafik eingegeben werden. 
