@@ -83,6 +83,10 @@ def intersection(x1, h1, x2, h2):
 
 fig, ax = plt.subplots(figsize=(8, 8))
 
+fig.canvas.manager.set_window_title(
+    "Höhe zwischen zwei Masten"
+)
+
 # Gleiche Skalierung für x und y
 ax.set_aspect("equal", adjustable="box")
 
@@ -268,7 +272,8 @@ blue_label = ax.text(
 title = ax.text(
     VIEW_WIDTH / 2,
     VIEW_HEIGHT - 0.8,
-    "Obere Punkte horizontal und vertikal verschieben",
+    "Höhe am Schnittpunkt der Diagonalen\n"
+    "obere Punkte horizontal und vertikal verschieben",
     ha="center",
     va="center",
     fontsize=12
