@@ -1,9 +1,8 @@
-import matplotlib.pyplot as plt
-import numpy as np
-
+# %%
 # ============================================================
 # Interaktive geometrische Figur
 #
+# Jupyter-Einstellungen
 # Die beiden oberen Punkte können frei horizontal und
 # vertikal mit der Maus verschoben werden.
 #
@@ -15,16 +14,20 @@ import numpy as np
 # Abstand der beiden senkrechten Linien ab.
 # ============================================================
 
+import matplotlib.pyplot as plt
+import numpy as np
 
-# ------------------------------------------------------------
+# %%
+# ============================================================
 # Einstellungen
-# ------------------------------------------------------------
+# ============================================================
 
 # Größe des Anzeigebereichs
 VIEW_WIDTH = 25.0
 VIEW_HEIGHT = 25.0
 
 # Anfangspositionen der beiden oberen Punkte
+# Die Figur steht damit zunächst mittig im Anzeigebereich.
 left_x = 7.5
 left_height = 15.0
 
@@ -34,14 +37,15 @@ right_height = 10.0
 # Mindesthöhe der Punkte
 MIN_HEIGHT = 0.5
 
-# Minimaler horizontaler Abstand der senkrechten Linien
+# Minimaler horizontaler Abstand der beiden senkrechten Linien
 MIN_DISTANCE = 1.0
 
 step = 0.1
 
-# ------------------------------------------------------------
+# %%
+# ============================================================
 # Berechnung des Schnittpunktes
-# ------------------------------------------------------------
+# ============================================================
 
 def intersection(x1, h1, x2, h2):
     """
@@ -57,10 +61,13 @@ def intersection(x1, h1, x2, h2):
         x, y des Schnittpunktes
     """
 
-    # Horizontale Breite der Figur
+    # Horizontaler Abstand der beiden senkrechten Linien
     width = x2 - x1
 
     # Höhe des Schnittpunktes
+    #
+    # Diese Formel zeigt bereits:
+    # Die Höhe hängt nicht von der Breite ab.
     y = h1 * h2 / (h1 + h2)
 
     # Horizontale Position des Schnittpunktes
@@ -69,30 +76,30 @@ def intersection(x1, h1, x2, h2):
     return x, y
 
 
-# ------------------------------------------------------------
+# %%
+# ============================================================
 # Abbildung vorbereiten
-# ------------------------------------------------------------
+# ============================================================
 
 fig, ax = plt.subplots(figsize=(8, 8))
-
-fig.canvas.manager.set_window_title(
-    "Höhe zwischen zwei Masten"
-)
 
 # Gleiche Skalierung für x und y
 ax.set_aspect("equal", adjustable="box")
 
-# Fester Anzeigebereich
+# Fester Anzeigebereich: 25 x 25
 ax.set_xlim(0, VIEW_WIDTH)
 ax.set_ylim(0, VIEW_HEIGHT)
 
+# Achsen einblenden
 #ax.axis("off")
 ax.axis("on")
 ax.grid(True)
 
-# ------------------------------------------------------------
+
+# %%
+# ============================================================
 # Anfangsposition des Schnittpunktes
-# ------------------------------------------------------------
+# ============================================================
 
 intersection_x, intersection_y = intersection(
     left_x,
@@ -102,9 +109,10 @@ intersection_x, intersection_y = intersection(
 )
 
 
-# ------------------------------------------------------------
+# %%
+# ============================================================
 # Grundlinie
-# ------------------------------------------------------------
+# ============================================================
 
 base_line, = ax.plot(
     [0, VIEW_WIDTH],
@@ -114,9 +122,10 @@ base_line, = ax.plot(
 )
 
 
-# ------------------------------------------------------------
-# Senkrechte schwarze Linien
-# ------------------------------------------------------------
+# %%
+# ============================================================
+# Schwarze senkrechte Linien
+# ============================================================
 
 left_vertical, = ax.plot(
     [left_x, left_x],
@@ -133,10 +142,12 @@ right_vertical, = ax.plot(
 )
 
 
-# ------------------------------------------------------------
+# %%
+# ============================================================
 # Rote Diagonalen
-# ------------------------------------------------------------
+# ============================================================
 
+# Von oben links nach unten rechts
 red_left, = ax.plot(
     [left_x, right_x],
     [left_height, 0],
@@ -144,6 +155,7 @@ red_left, = ax.plot(
     linewidth=2.5
 )
 
+# Von unten links nach oben rechts
 red_right, = ax.plot(
     [left_x, right_x],
     [0, right_height],
@@ -152,9 +164,10 @@ red_right, = ax.plot(
 )
 
 
-# ------------------------------------------------------------
+# %%
+# ============================================================
 # Blaue Linie
-# ------------------------------------------------------------
+# ============================================================
 
 blue_line, = ax.plot(
     [intersection_x, intersection_x],
@@ -164,9 +177,10 @@ blue_line, = ax.plot(
 )
 
 
-# ------------------------------------------------------------
+# %%
+# ============================================================
 # Schnittpunkt markieren
-# ------------------------------------------------------------
+# ============================================================
 
 intersection_point, = ax.plot(
     [intersection_x],
@@ -177,9 +191,10 @@ intersection_point, = ax.plot(
 )
 
 
-# ------------------------------------------------------------
+# %%
+# ============================================================
 # Verschiebbare obere Punkte
-# ------------------------------------------------------------
+# ============================================================
 
 left_handle, = ax.plot(
     [left_x],
@@ -202,9 +217,10 @@ right_handle, = ax.plot(
 )
 
 
-# ------------------------------------------------------------
+# %%
+# ============================================================
 # Beschriftungen der senkrechten Linien
-# ------------------------------------------------------------
+# ============================================================
 
 left_label = ax.text(
     left_x - 0.4,
@@ -227,9 +243,10 @@ right_label = ax.text(
 )
 
 
-# ------------------------------------------------------------
+# %%
+# ============================================================
 # Beschriftung der blauen Linie
-# ------------------------------------------------------------
+# ============================================================
 
 blue_label = ax.text(
     intersection_x + 0.35,
@@ -243,30 +260,25 @@ blue_label = ax.text(
 )
 
 
-# ------------------------------------------------------------
+# %%
+# ============================================================
 # Überschrift
-# ------------------------------------------------------------
+# ============================================================
 
-ax.text(
+title = ax.text(
     VIEW_WIDTH / 2,
     VIEW_HEIGHT - 0.8,
-    "Höhe am Schnittpunkt der Diagonalen",
+    "Obere Punkte horizontal und vertikal verschieben",
     ha="center",
     va="center",
     fontsize=12
 )
 
 
-# ------------------------------------------------------------
-# Aktuell bewegter Punkt
-# ------------------------------------------------------------
-
-dragging = None
-
-
-# ------------------------------------------------------------
+# %%
+# ============================================================
 # Zeichnung aktualisieren
-# ------------------------------------------------------------
+# ============================================================
 
 def update_figure():
 
@@ -373,16 +385,25 @@ def update_figure():
         f"{y:.2f}"
     )
 
-    # Fester Anzeigebereich
+    # Der Anzeigebereich bleibt immer 25 x 25
     ax.set_xlim(0, VIEW_WIDTH)
     ax.set_ylim(0, VIEW_HEIGHT)
 
     fig.canvas.draw_idle()
 
 
-# ------------------------------------------------------------
+# %%
+# ============================================================
+# Maussteuerung
+# ============================================================
+
+dragging = None
+
+
+# %%
+# ============================================================
 # Mausklick
-# ------------------------------------------------------------
+# ============================================================
 
 def mouse_press(event):
 
@@ -407,17 +428,19 @@ def mouse_press(event):
         + (event.ydata - right_height) ** 2
     ) ** 0.5
 
-    # Punkt auswählen
+    # Linken Punkt auswählen
     if distance_left < 1.0:
         dragging = "left"
 
+    # Rechten Punkt auswählen
     elif distance_right < 1.0:
         dragging = "right"
 
 
-# ------------------------------------------------------------
+# %%
+# ============================================================
 # Mausbewegung
-# ------------------------------------------------------------
+# ============================================================
 
 def mouse_move(event):
 
@@ -434,10 +457,7 @@ def mouse_move(event):
     ):
         return
 
-    # --------------------------------------------------------
     # Neue Koordinaten
-    # --------------------------------------------------------
-
     new_x = max(
         0.0,
         min(VIEW_WIDTH, event.xdata)
@@ -457,14 +477,16 @@ def mouse_move(event):
 
     if dragging == "left":
 
-        # Mindestabstand zum rechten Punkt
+        # Linker Punkt darf den rechten Punkt nicht überholen
         new_x = min(
             new_x,
             right_x - MIN_DISTANCE
         )
 
-        # Falls der rechte Punkt sehr weit links liegt
-        new_x = max(0.0, new_x)
+        new_x = max(
+            0.0,
+            new_x
+        )
 
         left_x = new_x
         left_height = new_y
@@ -475,7 +497,7 @@ def mouse_move(event):
 
     elif dragging == "right":
 
-        # Mindestabstand zum linken Punkt
+        # Rechter Punkt darf den linken Punkt nicht überholen
         new_x = max(
             new_x,
             left_x + MIN_DISTANCE
@@ -493,9 +515,10 @@ def mouse_move(event):
     update_figure()
 
 
-# ------------------------------------------------------------
+# %%
+# ============================================================
 # Maustaste loslassen
-# ------------------------------------------------------------
+# ============================================================
 
 def mouse_release(event):
 
@@ -504,9 +527,10 @@ def mouse_release(event):
     dragging = None
 
 
-# ------------------------------------------------------------
+# %%
+# ============================================================
 # Maus-Ereignisse registrieren
-# ------------------------------------------------------------
+# ============================================================
 
 fig.canvas.mpl_connect(
     "button_press_event",
@@ -524,8 +548,9 @@ fig.canvas.mpl_connect(
 )
 
 
-# ------------------------------------------------------------
-# Programm starten
-# ------------------------------------------------------------
+# %%
+# ============================================================
+# Darstellung starten
+# ============================================================
 
 plt.show()
